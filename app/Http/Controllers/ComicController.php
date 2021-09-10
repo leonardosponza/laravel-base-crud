@@ -27,7 +27,7 @@ class ComicController extends Controller
      */
     public function create()
     {
-        //
+        return view('comics.create');
     }
 
     /**
@@ -38,7 +38,20 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $formData = $request->all();
+       
+        $newComic = new Comic();
+        $newComic->title = $data ['title']
+        $newComic->description = $data ['description']
+        $newComic->thumb = $data ['thumb']
+        $newComic->price = $data ['price']
+        $newComic->series = $data ['series']
+        $newComic->sale_date = $data ['sale_date']
+        $newComic->type = $data ['type']
+
+        
+
+        return redirect()->route('comics.show', $newComic->id);
     }
 
     /**
@@ -47,9 +60,10 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Comic $comic)
     {
-        $comic = Comic::find($id);
+        // Al posto del find uso la dependency injection
+        // $comic = Comic::find($id);
         // dd($comic);
 
         return view('comics.show', compact('comic'));
@@ -61,9 +75,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comic $comic)
     {
-        //
+        return view('comics.edit', compact('comic'));
     }
 
     /**
@@ -73,9 +87,13 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $formData = $request->all();
+        
+        $comic->update($formData);
+
+        return redirect()->route('comics.index')->with('modifica','Hai modificato #' . $comic->id);
     }
 
     /**
@@ -84,8 +102,9 @@ class ComicController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comic $comic)
     {
-        //
+        $comic->delete();
+        return redirect()->route('comics.index')->with('cancella','Hai cancellato #' . $comic->id);
     }
 }
