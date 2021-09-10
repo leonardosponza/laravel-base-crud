@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($comics as $comic)
+        @forelse ($comics as $comic)
           <tr>
             <th scope="row">{{$comic->id}}</th>
             <td>{{$comic->title}}</td>
@@ -49,7 +49,9 @@
               </form>
             </td>
           </tr>
-        @endforeach
+        @empty 
+          nessun fumetto
+        @endforelse
       </tbody>
     </table>
   </div>
